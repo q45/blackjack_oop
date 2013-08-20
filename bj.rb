@@ -88,6 +88,16 @@ module Hand
 
 end
 
+def add_card(new_card)
+	cards << new_card
+end
+
+def is_busted?
+	total > Blackjack::BLACKJACK_AMOUNT
+end
+
+end
+
 class Player
 	include Hand
 	attr_accessor :name, :cards
@@ -98,9 +108,10 @@ class Player
 	end
 
 	def show_flop
-		shoe_hand
+		show_hand
 	end
 end
+
 class Dealer
 	include Hand
 
@@ -156,12 +167,12 @@ class Blackjack
 			end
 			play_again?
 		elsif player_or_dealer.is_busted?
-			if player_or_dealeris_a?(Dealer)
+			if player_or_dealer.is_a?(Dealer)
 				puts "Congratulations, dealer busted. #{player.name} win"
 			else
 				puts "Sorry, #{player.name} busted. #{player.name} loses"
 			end
-			player_again?
+			play_again?
 	end
 end
 
@@ -226,7 +237,7 @@ def play_again?
 	if gets.chomp == '1'
 		puts "Starting a new game..."
 		puts ""
-		deck = Deck.new_card
+		deck = Deck.new
 		player.cards = []
 		dealer.cards = []
 		start
@@ -245,7 +256,7 @@ def start
 	who_won?
 end
 end
-end
+
 
 game = Blackjack.new
 game.start
